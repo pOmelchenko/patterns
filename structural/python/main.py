@@ -11,7 +11,7 @@ def dec_without_args(function):
 
 
 @dec_without_args
-def with_dec_which_hast_args():
+def with_dec_which_has_not_args():
     pass
 
 
@@ -32,7 +32,7 @@ def with_dec_which_has_args():
 def main():
     print_hello_world()
 
-    with_dec_which_hast_args()
+    with_dec_which_has_not_args()
 
     with_dec_which_has_args()
 
