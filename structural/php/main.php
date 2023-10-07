@@ -12,10 +12,11 @@ function print_hello_world(): void
 
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::IS_REPEATABLE)]
 class dec_without_args {
-    public function __invoke(callable $function): void
+    public function __invoke(callable $function): callable
     {
         echo 'hello world from decorator without args' . PHP_EOL;
-        $function();
+
+        return $function;
     }
 }
 
@@ -23,22 +24,23 @@ class dec_without_args {
 #[dec_without_args]
 function with_dec_which_has_not_args(): void
 {
-    echo 'message from func ' . __FUNCTION__ . PHP_EOL;
+    echo 'call with_dec_which_has_not_args' . PHP_EOL;
 }
 
 
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::IS_REPEATABLE)]
 class dec_with_args {
     public function __construct(
-            private string $message
+            private readonly string $message
     ) {
         // ...
     }
 
-    public function __invoke(callable $function): void
+    public function __invoke(callable $function): callable
     {
-        echo "'{$this->message}' from decorator with args" . PHP_EOL;
-        $function();
+        echo "\"$this->message\" from decorator with args" . PHP_EOL;
+
+        return $function;
     }
 }
 
@@ -46,48 +48,53 @@ class dec_with_args {
 #[dec_with_args('some message')]
 function with_dec_which_has_args(): void
 {
-    echo 'message from func ' . __FUNCTION__ . PHP_EOL;
+    echo 'call with_dec_which_has_args' . PHP_EOL;
 }
 
-#[dec_with_args('some message one')]
-#[dec_with_args('some message two')]
+
+#[dec_with_args('first')]
+#[dec_with_args('second')]
 function with_two_decs(): void
 {
-    echo 'message from func ' . __FUNCTION__ . PHP_EOL;
+    echo 'call with_two_decs' . PHP_EOL;
 }
 
 
-if (!function_exists('call_user_func_with_decorator')) {
-    function call_user_func_with_decorator(callable $function, mixed ...$args): mixed
+if (!function_exists('call_user_func_with_decorators')) {
+    function call_user_func_with_decorators(callable $function, array $attributes = null): callable
     {
-        //...
+        $attributes ??= array_reverse(
+            (new ReflectionFunction($function))->getAttributes()
+        );
+
+        if ($attributes === []) {
+            return $function;
+        }
+
+        $attribute = array_shift($attributes);
+
+        if ([] !== $attributes) {
+            call_user_func_with_decorators($function, $attributes);
+        }
+
+        return $attribute->newInstance()($function);
     }
 }
 
 
 function main(): void
 {
-    echo 'call print_hello_world() function';
-    echo PHP_EOL;
-    print_hello_world();
-    echo PHP_EOL;
+    call_user_func_with_decorators('print_hello_world')();
     echo PHP_EOL;
 
-    echo 'call with_dec_which_has_not_args() function';
-    echo PHP_EOL;
-    call_user_func_with_decorator('with_dec_which_has_not_args');
-    echo PHP_EOL;
+    call_user_func_with_decorators('with_dec_which_has_not_args')();
     echo PHP_EOL;
 
-    echo 'call with_dec_which_has_args() function';
-    echo PHP_EOL;
-    call_user_func_with_decorator('with_dec_which_has_args');
-    echo PHP_EOL;
+    call_user_func_with_decorators('with_dec_which_has_args')();
     echo PHP_EOL;
 
-    echo 'call with_two_decs() function';
+    call_user_func_with_decorators('with_two_decs')();
     echo PHP_EOL;
-    call_user_func_with_decorator('with_two_decs');
 }
 
 
