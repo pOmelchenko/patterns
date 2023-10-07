@@ -1,0 +1,9 @@
+{
+    "require": {
+        "php": "^8.2",
+        "symfony/var-dumper": "^6.3"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
