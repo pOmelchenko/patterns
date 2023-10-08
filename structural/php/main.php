@@ -38,7 +38,7 @@ class dec_with_args {
 
     public function __invoke(callable $function): callable
     {
-        echo "\"$this->message\" from decorator with args" . PHP_EOL;
+        echo sprintf('"%s" from decorator with args', $this->message) . PHP_EOL;
 
         return $function;
     }
@@ -57,28 +57,6 @@ function with_dec_which_has_args(): void
 function with_two_decs(): void
 {
     echo 'call with_two_decs' . PHP_EOL;
-}
-
-
-if (!function_exists('call_user_func_with_decorators')) {
-    function call_user_func_with_decorators(callable $function, array $attributes = null): callable
-    {
-        $attributes ??= array_reverse(
-            (new ReflectionFunction($function))->getAttributes()
-        );
-
-        if ($attributes === []) {
-            return $function;
-        }
-
-        $attribute = array_shift($attributes);
-
-        if ([] !== $attributes) {
-            call_user_func_with_decorators($function, $attributes);
-        }
-
-        return $attribute->newInstance()($function);
-    }
 }
 
 

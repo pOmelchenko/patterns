@@ -1,7 +1,20 @@
 {
+    "name": "pomelchenko/php",
+    "type": "project",
+    "license": "GPL-3",
+    "authors": [
+        {
+            "name": "Pavel Omelchenko",
+            "email": "p.Omelchenko@gmail.com"
+        }
+    ],
     "require": {
-        "php": "^8.2",
-        "symfony/var-dumper": "^6.3"
+        "php": "^8.2"
+    },
+    "autoload": {
+        "files": [
+            "helper.php"
+        ]
     },
     "config": {
         "sort-packages": true
