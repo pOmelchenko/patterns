@@ -11,7 +11,7 @@ function print_hello_world(): void
 
 
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::IS_REPEATABLE)]
-class dec_without_args {
+readonly final class dec_without_args {
     public function __invoke(callable $function): callable
     {
         echo 'hello world from decorator without args' . PHP_EOL;
@@ -29,9 +29,9 @@ function with_dec_which_has_not_args(): void
 
 
 #[Attribute(Attribute::TARGET_FUNCTION | Attribute::IS_REPEATABLE)]
-class dec_with_args {
+readonly final class dec_with_args {
     public function __construct(
-            private readonly string $message
+        private string $message
     ) {
         // ...
     }
