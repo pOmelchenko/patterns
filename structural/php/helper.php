@@ -6,7 +6,7 @@ if (!function_exists('call_user_func_with_decorators')) {
      * @return mixed
      * @throws ReflectionException
      */
-    function call_user_func_with_decorators(callable $function): mixed
+    function call_user_func_with_decorators(callable $function, mixed ...$args): mixed
     {
         if (!function_exists('sub_call')) {
             function sub_call(callable $function, array $attributes = null): callable
@@ -29,6 +29,6 @@ if (!function_exists('call_user_func_with_decorators')) {
             }
         }
 
-        return sub_call($function)();
+        return sub_call($function)(...$args);
     }
 }

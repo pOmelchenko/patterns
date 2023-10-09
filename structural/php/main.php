@@ -60,7 +60,17 @@ function with_two_decs(): void
 }
 
 
+#[dec_with_args('first')]
+#[dec_with_args('second')]
+function with_two_decs_and_args(string $message): void
+{
+    echo sprintf('call with_two_decs with "%s" in arg', $message) . PHP_EOL;
+}
 
+
+/**
+ * @throws ReflectionException
+ */
 function main(): void
 {
     call_user_func_with_decorators('print_hello_world');
@@ -73,6 +83,9 @@ function main(): void
     echo PHP_EOL;
 
     call_user_func_with_decorators('with_two_decs');
+    echo PHP_EOL;
+
+    call_user_func_with_decorators('with_two_decs_and_args', 'some arg');
     echo PHP_EOL;
 }
 
