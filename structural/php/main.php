@@ -68,9 +68,6 @@ function with_two_decs_and_args(string $message): void
 }
 
 
-/**
- * @throws ReflectionException
- */
 function main(): void
 {
     call_user_func_with_decorators('print_hello_world');
