@@ -60,18 +60,19 @@ function with_two_decs(): void
 }
 
 
+
 function main(): void
 {
-    call_user_func_with_decorators('print_hello_world')();
+    call_user_func_with_decorators('print_hello_world');
     echo PHP_EOL;
 
-    call_user_func_with_decorators('with_dec_which_has_not_args')();
+    call_user_func_with_decorators('with_dec_which_has_not_args');
     echo PHP_EOL;
 
-    call_user_func_with_decorators('with_dec_which_has_args')();
+    call_user_func_with_decorators('with_dec_which_has_args');
     echo PHP_EOL;
 
-    call_user_func_with_decorators('with_two_decs')();
+    call_user_func_with_decorators('with_two_decs');
     echo PHP_EOL;
 }
 
